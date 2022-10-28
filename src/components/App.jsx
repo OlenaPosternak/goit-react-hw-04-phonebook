@@ -52,10 +52,16 @@ export default function App() {
     );
   }
 
+  console.log(contacts);
+
   const filterNormilized = filter.toLowerCase().trim();
-  const visibleContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filterNormilized)
-  );
+  const visibleContacts = contacts;
+
+  if (contacts.lenght > 0) {
+    visibleContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filterNormilized)
+    );
+  }
 
   return (
     <AppStyled>
