@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppStyled } from './App.module';
-import ContactForm  from './ContactForm/ContactForm ';
+import ContactForm from './ContactForm/ContactForm ';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 import { PropTypes } from 'prop-types';
@@ -8,27 +8,17 @@ import { PropTypes } from 'prop-types';
 const shortid = require('shortid');
 const contactId = shortid.generate();
 
-export default function  App () {
-    const [contacts, setContacts] = useState([]);
-    const [filter, setFilter] = useState(``);
-  
+const savedContacts = JSON.parse(localStorage.getItem(`myContacts`));
 
-//   componentDidMount() {
-//     const savedContacts = JSON.parse(localStorage.getItem(`myContacts`));
+export default function App() {
+  const [contacts, setContacts] = useState(savedContacts);
+  const [filter, setFilter] = useState(``);
 
-//     if (savedContacts) {
-//       this.setState({ contacts: savedContacts });
-//     }
-//   }
+  useEffect(() => {
+    localStorage.setItem(`myContacts`, JSON.stringify(contacts));
+  }, [contacts]);
 
-//   componentDidUpdate(prevProps, prevState) {
-//     if (this.state.contacts !== prevState.contacts) {
-//       localStorage.setItem(`myContacts`, JSON.stringify(this.state.contacts));
-//     }
-//   }
-
-  function onSubmitHendler (name,number) {
-// !!!2 контакти з однаковим айді!!!
+  function onSubmitHendler(name, number) {
     const contact = {
       id: contactId,
       name: name,
@@ -46,38 +36,35 @@ export default function  App () {
       return;
     }
 
-    setContacts(prevState => ( [...prevState, contact]));
+    setContacts(prevState => [...prevState, contact]);
+  }
 
-  };
-
-  function filterName (event) {
+  function filterName(event) {
     console.log(event.currentTarget.value);
-    setFilter(  event.currentTarget.value );
-  };
+    setFilter(event.currentTarget.value);
+  }
 
-  function deleteContact ( contactId ) {
+  function deleteContact(contactId) {
     console.log(contactId);
 
-    setContacts(prevState =>prevState.filter(contact => contactId !== contact.id))
-
-  };
-
-  
-  
-    const filterNormilized = filter.toLowerCase().trim();
-    const visibleContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterNormilized)
+    setContacts(prevState =>
+      prevState.filter(contact => contactId !== contact.id)
     );
+  }
 
-    return (
-      <AppStyled>
-        <h1>Phonebook</h1>
-        <ContactForm onSubmitForm={onSubmitHendler} />
-        <Filter value={filter} onChengeFilter={filterName} />
-        <ContactsList contacts={visibleContacts} deleteContact={deleteContact} />
-      </AppStyled>
-    );
-  
+  const filterNormilized = filter.toLowerCase().trim();
+  const visibleContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterNormilized)
+  );
+
+  return (
+    <AppStyled>
+      <h1>Phonebook</h1>
+      <ContactForm onSubmitForm={onSubmitHendler} />
+      <Filter value={filter} onChengeFilter={filterName} />
+      <ContactsList contacts={visibleContacts} deleteContact={deleteContact} />
+    </AppStyled>
+  );
 }
 
 App.propTypes = {
