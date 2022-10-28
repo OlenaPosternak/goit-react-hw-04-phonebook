@@ -11,7 +11,7 @@ const contactId = shortid.generate();
 const savedContacts = JSON.parse(localStorage.getItem(`myContacts`));
 
 export default function App() {
-  const [contacts, setContacts] = useState(savedContacts);
+  const [contacts, setContacts] = useState(savedContacts ?? []);
   const [filter, setFilter] = useState(``);
 
   useEffect(() => {
