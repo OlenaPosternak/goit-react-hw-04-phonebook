@@ -2,8 +2,6 @@ import { ListOfContact, Container, ContactItem, Button } from './ContactList.mod
 import { PropTypes } from 'prop-types';
 
 export const ContactsList = ({ contacts, deleteContact }) => {
-    console.log(contacts);
-
   return (
     <Container>
       <h2>My contacts</h2>

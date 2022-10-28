@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import { useState, useEffect } from 'react';
 import { AppStyled } from './App.module';
 import ContactForm from './ContactForm/ContactForm ';
@@ -5,8 +6,6 @@ import { ContactsList } from './ContactsList/ContactsList';
 import { Filter } from './Filter/Filter';
 import { PropTypes } from 'prop-types';
 
-const shortid = require('shortid');
-let contactId = shortid.generate();
 
 const savedContacts = JSON.parse(localStorage.getItem(`myContacts`));
 
@@ -19,11 +18,14 @@ export default function App() {
   }, [contacts]);
 
   function onSubmitHendler(name, number) {
-    const contact = {
+    let contactId  = nanoid();
+   let contact = {
       id: contactId,
       name: name,
       number: number,
     };
+
+    console.log (contact);
 
     const contactName = [];
 
@@ -40,7 +42,6 @@ export default function App() {
   }
 
   function filterName(event) {
-    console.log(event.currentTarget.value);
     setFilter(event.currentTarget.value);
   }
 
