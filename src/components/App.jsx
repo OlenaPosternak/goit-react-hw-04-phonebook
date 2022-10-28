@@ -6,7 +6,7 @@ import { Filter } from './Filter/Filter';
 import { PropTypes } from 'prop-types';
 
 const shortid = require('shortid');
-const contactId = shortid.generate();
+let contactId = shortid.generate();
 
 const savedContacts = JSON.parse(localStorage.getItem(`myContacts`));
 
